@@ -1,6 +1,6 @@
 // sw.js - Service Worker con estrategia Cache First
 
-const CACHE_STATIC_NAME = 'static-geo-v1';
+const CACHE_STATIC_NAME = 'static-geo-v2';
 const STATIC_FILES = [
   './',
   './index.html',

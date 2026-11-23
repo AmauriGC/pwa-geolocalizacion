@@ -37,4 +37,4 @@ Aplicación web progresiva que adjunta la **ubicación del dispositivo** a un re
 1. **Laptop:** Adjuntar → tarjeta → Permitir → suele salir *Ubicación Aproximada* con decenas o cientos de metros.
 2. **Teléfono:** lo mismo → con GPS activo sale *Precisión GPS Alta* (mejor al aire libre).
 3. **Denegar:** bloquea el permiso y vuelve a pulsar: aparece directo el selector manual.
-4. **DevTools:** Application → Cache Storage → `static-geo-v1` contiene `geo-helper.js`. En *Sensors* se puede simular una ubicación.
+4. **DevTools:** Application → Cache Storage → `static-geo-v2` contiene `geo-helper.js`. En *Sensors* se puede simular una ubicación.
