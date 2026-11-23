@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>Reporte con Ubicación PWA</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Reporte con Ubicación</h1>
+      <p class="autor">Cristian Amauri Gonzaga Castañeda</p>
+    </div>
+    <button id="btn-instalar" type="button" hidden>Instalar App</button>
+  </header>
+
+  <main>
+    <!-- 1. Formulario del reporte: el negocio que necesita coordenadas -->
+    <section class="card">
+      <h2>Reporte técnico</h2>
+      <label for="campo-titulo">Título</label>
+      <input id="campo-titulo" type="text" placeholder="Ej. Fuga en tubería del pasillo B">
+      <label for="campo-descripcion">Descripción</label>
+      <textarea id="campo-descripcion" rows="3" placeholder="¿Qué observaste?"></textarea>
+
+      <div class="botones">
+        <button id="btn-adjuntar-ubicacion" type="button">Adjuntar mi ubicación</button>
+      </div>
+      <p id="mensaje-estado" class="estado">Aún no se ha adjuntado ninguna ubicación.</p>
+    </section>
+
+    <!-- 2. Pre-Permiso: se muestra ANTES del diálogo nativo cuando el estado es 'prompt' -->
+    <section id="tarjeta-prepermiso" class="card aviso" hidden>
+      <h2>¿Por qué pedimos tu ubicación?</h2>
+      <p>Adjuntamos tus coordenadas al reporte para que el equipo técnico sepa <b>exactamente dónde</b> está el problema.</p>
+      <ul>
+        <li>Se lee <b>una sola vez</b>, solo cuando pulses el botón. No hay rastreo continuo.</li>
+        <li>No se comparte con terceros ni se usa para publicidad.</li>
+        <li>Si prefieres no compartirla, puedes elegir tu zona a mano.</li>
+      </ul>
+      <p class="nota">Después de pulsar «Permitir», tu navegador mostrará su propio aviso: elige <b>Permitir</b>.</p>
+      <div class="botones">
+        <button id="btn-confirmar-ubicacion" type="button">Permitir y obtener ubicación</button>
+        <button id="btn-rechazar-ubicacion" type="button" class="secundario">Prefiero elegir mi zona</button>
+      </div>
+    </section>
+
+    <!-- 3. Resultado: coordenadas + indicador de calidad de señal -->
+    <section id="tarjeta-resultado" class="card" hidden>
+      <h2>Ubicación adjuntada</h2>
+      <p id="etiqueta-precision" class="etiqueta"></p>
+      <dl class="datos">
+        <dt>Latitud</dt><dd id="dato-latitud">-</dd>
+        <dt>Longitud</dt><dd id="dato-longitud">-</dd>
+        <dt>Margen de error</dt><dd id="dato-precision">-</dd>
+        <dt>Leída a las</dt><dd id="dato-hora">-</dd>
+      </dl>
+      <p><a id="enlace-mapa" href="#" target="_blank" rel="noopener">Ver en OpenStreetMap</a></p>
+    </section>
+
+    <!-- 4. Plan B: selector manual de zona (permiso denegado, TIMEOUT o error) -->
+    <section id="tarjeta-zona-manual" class="card plan-b" hidden>
+      <h2>Elige tu zona manualmente</h2>
+      <p id="motivo-plan-b" class="estado"></p>
+      <div id="instrucciones-reactivar" class="instrucciones" hidden>
+        <p><b>Para reactivar el permiso:</b></p>
+        <ul>
+          <li><b>Chrome (Android / escritorio):</b> toca el candado junto a la dirección → Permisos → Ubicación → Permitir.</li>
+          <li><b>iPhone (Safari):</b> Ajustes → Safari → Ubicación → Preguntar o Permitir.</li>
+          <li><b>iPhone (app instalada):</b> tiene su propio permiso, separado de Safari. Revísalo en Ajustes → Privacidad → Localización.</li>
+        </ul>
+      </div>
+      <label for="selector-zona">Zona</label>
+      <select id="selector-zona">
+        <option value="">Selecciona una zona…</option>
+        <option value="Edificio A - Planta baja">Edificio A - Planta baja</option>
+        <option value="Edificio A - Planta alta">Edificio A - Planta alta</option>
+        <option value="Edificio B - Laboratorios">Edificio B - Laboratorios</option>
+        <option value="Cafetería">Cafetería</option>
+        <option value="Estacionamiento">Estacionamiento</option>
+        <option value="Canchas">Canchas</option>
+      </select>
+      <div class="botones">
+        <button id="btn-confirmar-zona" type="button">Usar esta zona</button>
+        <button id="btn-reintentar-baja" type="button" class="secundario" hidden>Reintentar con baja precisión</button>
+      </div>
+    </section>
+
+    <!-- 5. Segundo uso del módulo: comparar alta vs. baja precisión -->
+    <section class="card">
+      <h2>Comparar precisión</h2>
+      <p class="estado">Reutiliza el mismo <code>geo-helper.js</code> con otras opciones. Útil para comparar laptop vs. teléfono.</p>
+      <div class="botones">
+        <button id="btn-lectura-rapida" type="button" class="secundario">Lectura rápida (baja precisión)</button>
+      </div>
+      <p id="resultado-rapido" class="estado"></p>
+    </section>
+
+    <!-- 6. Paquete final: lo que se enviaría o encolaría en IndexedDB -->
+    <section id="tarjeta-paquete" class="card" hidden>
+      <h2>Paquete listo para enviar</h2>
+      <pre id="vista-paquete"></pre>
+    </section>
+  </main>
+
+  <!-- El orden importa: app.js usa las funciones que define geo-helper.js -->
+  <script src="./geo-helper.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
