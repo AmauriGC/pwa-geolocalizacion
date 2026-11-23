@@ -25,7 +25,6 @@ const datoLatitud = document.getElementById('dato-latitud');
 const datoLongitud = document.getElementById('dato-longitud');
 const datoPrecision = document.getElementById('dato-precision');
 const datoHora = document.getElementById('dato-hora');
-const enlaceMapa = document.getElementById('enlace-mapa');
 
 const tarjetaZonaManual = document.getElementById('tarjeta-zona-manual');
 const motivoPlanB = document.getElementById('motivo-plan-b');
@@ -82,8 +81,6 @@ function renderizarResultadoUbicacion(ubicacion) {
   datoLongitud.textContent = ubicacion.longitud.toFixed(6);
   datoPrecision.textContent = '± ' + ubicacion.precisionMetros + ' m';
   datoHora.textContent = new Date(ubicacion.timestamp).toLocaleTimeString();
-  enlaceMapa.href = 'https://www.openstreetmap.org/?mlat=' + ubicacion.latitud +
-    '&mlon=' + ubicacion.longitud + '#map=18/' + ubicacion.latitud + '/' + ubicacion.longitud;
 
   tarjetaResultado.hidden = false;
   mensajeEstado.textContent = 'Ubicación adjuntada con un margen de ± ' + ubicacion.precisionMetros + ' m.';
